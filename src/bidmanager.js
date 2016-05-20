@@ -312,6 +312,8 @@ exports.registerBidRequestTime = function (bidderCode, time) {
 exports.executeCallback = function () {
   var params = [];
 
+  clearTimeout(pbjs.callbackTimeout);
+
   //this pbjs.registerBidCallbackHandler will be deprecated soon
   if (typeof pbjs.registerBidCallbackHandler === objectType_function && !_callbackExecuted) {
     try {

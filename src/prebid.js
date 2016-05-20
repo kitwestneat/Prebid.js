@@ -97,7 +97,8 @@ function init(timeout, adUnitCodeArr) {
   }
 
   //set timeout for all bids
-  setTimeout(bidmanager.executeCallback, cbTimeout);
+  clearTimeout(pbjs.callbackTimeout);
+  pbjs.callbackTimeout = setTimeout(bidmanager.executeCallback, cbTimeout);
 
   //parse settings into internal vars
   if (adUnitCodeArr && utils.isArray(adUnitCodeArr)) {
