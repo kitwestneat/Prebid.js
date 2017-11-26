@@ -12,5 +12,6 @@
 		"thoughtleadrBidAdapter",
 		"rubiconBidAdapter",
 		"c1xBidAdapter",
-		"yieldmoBidAdapter"
+		"yieldmoBidAdapter",
+		"sekindoUMBidAdapter"
 ]
