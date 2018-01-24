@@ -1,17 +1,13 @@
 [
+	"appnexusBidAdapter",
 		"aolBidAdapter",
-		"appnexusAstBidAdapter",
-		"centroBidAdapter",
-		"districtmDMXBidAdapter",
 		"openxBidAdapter",
-		"sonobiBidAdapter",
 		"rhythmoneBidAdapter",
 		"sharethroughBidAdapter",
-		"tripleliftBidAdapter",
-		"yieldbotBidAdapter",
-		"thoughtleadrBidAdapter",
 		"rubiconBidAdapter",
-		"c1xBidAdapter",
+		"sekindoUMBidAdapter",
 		"yieldmoBidAdapter",
-		"sekindoUMBidAdapter"
+		"c1xBidAdapter",
+		"yieldbotBidAdapter",
+		"sonobiBidAdapter"
 ]
