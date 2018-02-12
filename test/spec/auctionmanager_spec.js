@@ -24,24 +24,40 @@ function timestamp() {
   return new Date().getTime();
 }
 
-function getDefaultExpected(bid, keys) {
-  var expected = {
-    'hb_bidder': bid.bidderCode,
-    'hb_adid': bid.adId,
-    'hb_pb': bid.pbMg,
-    'hb_size': bid.getSize(),
-    'hb_source': bid.source,
-    'hb_format': bid.mediaType,
-  };
+const BIDDER_CODE = 'sampleBidder';
+const TEST_BIDS = [{
+  'ad': 'creative',
+  'cpm': '1.99',
+  'width': 300,
+  'height': 250,
+  'bidderCode': BIDDER_CODE,
+  'requestId': '4d0a6829338a07',
+  'creativeId': 'id',
+  'currency': 'USD',
+  'netRevenue': true,
+  'ttl': 360
+}];
 
-  if (!keys)
-    return expected;
-
-  return keys.reduce((map, key) => {
-    map[key] = expected[key];
-    return map;
-  }, {});
-}
+const TEST_BID_REQS = [{
+  'bidderCode': BIDDER_CODE,
+  'auctionId': '20882439e3238c',
+  'bidderRequestId': '331f3cf3f1d9c8',
+  'bids': [
+    {
+      'bidder': BIDDER_CODE,
+      'params': {
+        'placementId': 'id'
+      },
+      'adUnitCode': 'adUnit-code',
+      'sizes': [[300, 250], [300, 600]],
+      'bidId': '4d0a6829338a07',
+      'bidderRequestId': '331f3cf3f1d9c8',
+      'auctionId': '20882439e3238c'
+    }
+  ],
+  'auctionStart': 1505250713622,
+  'timeout': 3000
+}];
 
 describe('auctionmanager.js', function () {
   let xhr;
@@ -74,19 +90,28 @@ describe('auctionmanager.js', function () {
       source: 'client',
       mediaType: 'banner',
     };
-    var bid = {};
-    var bidPriceCpm = 5.578;
-    var bidPbLg = 5.50;
-    var bidPbMg = 5.50;
-    var bidPbHg = 5.57;
-    var bidPbAg = 5.50;
 
-    var adUnitCode = '12345';
-    var bidderCode = 'appnexus';
-    var size = '300x250';
-    var adId = '1adId';
-    var source = 'client';
-    var mediatype = 'banner';
+    /* return the expected response for a given bid, filter by keys if given */
+    function getDefaultExpected(bid, keys) {
+      var expected = {
+        'hb_bidder': bid.bidderCode,
+        'hb_adid': bid.adId,
+        'hb_pb': bid.pbMg,
+        'hb_size': bid.getSize(),
+        'hb_source': bid.source,
+        'hb_format': bid.mediaType,
+      };
+
+      if (!keys)
+        return expected;
+
+      return keys.reduce((map, key) => {
+        map[key] = expected[key];
+        return map;
+      }, {});
+    }
+
+    var bid = {};
 
     before(function () {
       bid = Object.assign({}, DEFAULT_BID);
@@ -94,7 +119,7 @@ describe('auctionmanager.js', function () {
 
     it('No bidder level configuration defined - default', function () {
       var expected = getDefaultExpected(bid);
-      var response = getKeyValueTargetingPairs(bidderCode, bid, CONSTANTS.GRANULARITY_OPTIONS.MEDIUM);
+      var response = getKeyValueTargetingPairs(bid.bidderCode, bid, CONSTANTS.GRANULARITY_OPTIONS.MEDIUM);
       assert.deepEqual(response, expected);
     });
 
@@ -143,7 +168,7 @@ describe('auctionmanager.js', function () {
       };
 
       var expected = getDefaultExpected(bid);
-      expected.hb_pb = bidPbHg;
+      expected.hb_pb = bid.pbHg;
 
       var response = getKeyValueTargetingPairs(bid.bidderCode, bid);
       assert.deepEqual(response, expected);
@@ -182,9 +207,9 @@ describe('auctionmanager.js', function () {
       };
 
       var expected = getDefaultExpected(bid);
-      expected.hb_pb = bidPbHg;
+      expected.hb_pb = bid.pbHg;
 
-      var response = getKeyValueTargetingPairs(bidderCode, bid);
+      var response = getKeyValueTargetingPairs(bid.bidderCode, bid);
       assert.deepEqual(response, expected);
     });
 
@@ -221,7 +246,7 @@ describe('auctionmanager.js', function () {
       };
       var expected = getDefaultExpected(bid);
 
-      var response = getKeyValueTargetingPairs(bidderCode, bid, CONSTANTS.GRANULARITY_OPTIONS.MEDIUM);
+      var response = getKeyValueTargetingPairs(bid.bidderCode, bid);
       assert.deepEqual(response, expected);
     });
 
@@ -262,7 +287,7 @@ describe('auctionmanager.js', function () {
       var expected = getDefaultExpected(bid, ['hb_bidder', 'hb_adid']);
       expected.hb_pb = 10.0;
 
-      var response = getKeyValueTargetingPairs(bidderCode, bid);
+      var response = getKeyValueTargetingPairs(bid.bidderCode, bid);
       assert.deepEqual(response, expected);
     });
 
@@ -346,7 +371,7 @@ describe('auctionmanager.js', function () {
       var expected = getDefaultExpected(bid, ['hb_bidder', 'hb_adid', 'hb_size']);
       expected.hb_pb = 15.0;
 
-      var response = getKeyValueTargetingPairs(bidderCode, bid);
+      var response = getKeyValueTargetingPairs(bid.bidderCode, bid);
       assert.deepEqual(response, expected);
     });
 
@@ -378,7 +403,7 @@ describe('auctionmanager.js', function () {
       var expected = getDefaultExpected(bid);
       expected.hb_pb = 5.57;
 
-      var response = getKeyValueTargetingPairs(bidderCode, bid);
+      var response = getKeyValueTargetingPairs(bid.bidderCode, bid);
       assert.deepEqual(response, expected);
       assert.equal(bid.sendStandardTargeting, false);
     });
@@ -405,7 +430,7 @@ describe('auctionmanager.js', function () {
         'aKeyWithAValue': 42
       };
 
-      var response = getKeyValueTargetingPairs(bidderCode, bid);
+      var response = getKeyValueTargetingPairs(bid.bidderCode, bid);
       assert.deepEqual(response, expected);
     });
   });
@@ -466,44 +491,12 @@ describe('auctionmanager.js', function () {
     let spec;
     let auction;
     let ajaxStub;
-    const BIDDER_CODE = 'sampleBidder';
-    const BIDDER_CODE1 = 'sampleBidder1';
     let makeRequestsStub;
-    let bids = [{
-      'ad': 'creative',
-      'cpm': '1.99',
-      'width': 300,
-      'height': 250,
-      'bidderCode': BIDDER_CODE,
-      'requestId': '4d0a6829338a07',
-      'creativeId': 'id',
-      'currency': 'USD',
-      'netRevenue': true,
-      'ttl': 360
-    }];
-
-    let bidRequests = [{
-      'bidderCode': BIDDER_CODE,
-      'auctionId': '20882439e3238c',
-      'bidderRequestId': '331f3cf3f1d9c8',
-      'bids': [
-        {
-          'bidder': BIDDER_CODE,
-          'params': {
-            'placementId': 'id'
-          },
-          'adUnitCode': 'adUnit-code',
-          'sizes': [[300, 250], [300, 600]],
-          'bidId': '4d0a6829338a07',
-          'bidderRequestId': '331f3cf3f1d9c8',
-          'auctionId': '20882439e3238c'
-        }
-      ],
-      'auctionStart': 1505250713622,
-      'timeout': 3000
-    }];
+    let bids = TEST_BIDS;
 
     before(() => {
+      let bidRequests = TEST_BID_REQS;
+
       makeRequestsStub = sinon.stub(adaptermanager, 'makeBidRequests');
       makeRequestsStub.returns(bidRequests);
 
@@ -535,6 +528,10 @@ describe('auctionmanager.js', function () {
         createAuctionStub = sinon.stub(auctionModule, 'newAuction');
         createAuctionStub.returns(auction);
 
+        loadScriptStub = sinon.stub(adloader, 'loadScript').callsFake((...args) => {
+          args[1]();
+        });
+
         spec = {
           code: BIDDER_CODE,
           isBidRequestValid: sinon.stub(),
@@ -542,9 +539,11 @@ describe('auctionmanager.js', function () {
           interpretResponse: sinon.stub(),
           getUserSyncs: sinon.stub()
         };
-        loadScriptStub = sinon.stub(adloader, 'loadScript').callsFake((...args) => {
-          args[1]();
-        });
+
+        registerBidder(spec);
+        spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
+        spec.isBidRequestValid.returns(true);
+        spec.interpretResponse.returns(bids);
       });
 
       afterEach(() => {
@@ -552,57 +551,32 @@ describe('auctionmanager.js', function () {
         loadScriptStub.restore();
       });
 
-      it('should return proper price bucket increments for dense mode when cpm is in range 0-3', () => {
-        bids[0].cpm = '1.99';
-        registerBidder(spec);
-        spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-        spec.isBidRequestValid.returns(true);
-        spec.interpretResponse.returns(bids);
-        auction.callBids();
-        let registeredBid = auction.getBidsReceived().pop();
-        assert.equal(registeredBid.pbDg, '1.99', '0 - 3 hits at to 1 cent increment');
-      });
+      function checkPbDg(cpm, expected, msg) {
+        return function() {
+          bids[0].cpm = cpm;
+          auction.callBids();
 
-      it('should return proper price bucket increments for dense mode when cpm is in range 3-8', () => {
-        bids[0].cpm = '4.39';
-        registerBidder(spec);
-        spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-        spec.isBidRequestValid.returns(true);
-        spec.interpretResponse.returns(bids);
-        auction.callBids();
-        let registeredBid = auction.getBidsReceived().pop();
-        assert.equal(registeredBid.pbDg, '4.35', '3 - 8 hits at 5 cent increment');
-      });
+          let registeredBid = auction.getBidsReceived().pop();
+          assert.equal(registeredBid.pbDg, expected, msg);
+        };
+      };
 
-      it('should return proper price bucket increments for dense mode when cpm is in range 8-20', () => {
-        bids[0].cpm = '19.99';
-        registerBidder(spec);
-        spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-        spec.isBidRequestValid.returns(true);
-        spec.interpretResponse.returns(bids);
-        auction.callBids();
-        let registeredBid = auction.getBidsReceived().pop();
-        assert.equal(registeredBid.pbDg, '19.50', '8 - 20 hits at 50 cent increment');
-      });
+      it('should return proper price bucket increments for dense mode when cpm is in range 0-3',
+        checkPbDg('1.99', '1.99', '0 - 3 hits at to 1 cent increment'));
 
-      it('should return proper price bucket increments for dense mode when cpm is 20+', () => {
-        bids[0].cpm = '73.07';
-        registerBidder(spec);
-        spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-        spec.isBidRequestValid.returns(true);
-        spec.interpretResponse.returns(bids);
-        auction.callBids();
-        let registeredBid = auction.getBidsReceived().pop();
-        assert.equal(registeredBid.pbDg, '20.00', '20+ caps at 20.00');
-      });
+      it('should return proper price bucket increments for dense mode when cpm is in range 3-8',
+        checkPbDg('4.39', '4.35', '3 - 8 hits at 5 cent increment'));
+
+      it('should return proper price bucket increments for dense mode when cpm is in range 8-20',
+        checkPbDg('19.99', '19.50', '8 - 20 hits at 50 cent increment'));
+
+      it('should return proper price bucket increments for dense mode when cpm is 20+',
+        checkPbDg('73.07', '20.00', '20+ caps at 20.00'));
 
       it('should place dealIds in adserver targeting', () => {
         bids[0].dealId = 'test deal';
-        registerBidder(spec);
-        spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-        spec.isBidRequestValid.returns(true);
-        spec.interpretResponse.returns(bids);
         auction.callBids();
+
         let registeredBid = auction.getBidsReceived().pop();
         assert.equal(registeredBid.adserverTargeting[`hb_deal`], 'test deal', 'dealId placed in adserverTargeting');
       });
@@ -610,43 +584,22 @@ describe('auctionmanager.js', function () {
       it('should pass through default adserverTargeting sent from adapter', () => {
         bids[0].adserverTargeting = {};
         bids[0].adserverTargeting.extra = 'stuff';
-        registerBidder(spec);
-        spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-        spec.isBidRequestValid.returns(true);
-        spec.interpretResponse.returns(bids);
         auction.callBids();
+
         let registeredBid = auction.getBidsReceived().pop();
-        assert.equal(registeredBid.adserverTargeting.hb_bidder, 'sampleBidder');
+        assert.equal(registeredBid.adserverTargeting.hb_bidder, BIDDER_CODE);
         assert.equal(registeredBid.adserverTargeting.extra, 'stuff');
       });
 
       it('installs publisher-defined renderers on bids', () => {
-        let bidRequests = [{
-          'bidderCode': BIDDER_CODE,
-          'auctionId': '20882439e3238c',
-          'bidderRequestId': '331f3cf3f1d9c8',
-          'bids': [
-            {
-              'bidder': BIDDER_CODE,
-              'params': {
-                'placementId': 'id'
-              },
-              'adUnitCode': 'adUnit-code',
-              'sizes': [[300, 250], [300, 600]],
-              'bidId': '4d0a6829338a07',
-              'bidderRequestId': '331f3cf3f1d9c8',
-              'auctionId': '20882439e3238c',
-              'renderer': {
-                url: 'renderer.js',
-                render: (bid) => bid
-              }
-            }
-          ],
-          'auctionStart': 1505250713622,
-          'timeout': 3000
-        }];
-
+        let renderer = {
+          url: 'renderer.js',
+          render: (bid) => bid
+        };
+        let bidRequests = [Object.assign({}, TEST_BID_REQS[0])];
+        bidRequests[0].bids[0] = Object.assign({ renderer }, bidRequests[0].bids[0]);
         makeRequestsStub.returns(bidRequests);
+
         let bids1 = Object.assign({},
           bids[0],
           {
@@ -654,9 +607,6 @@ describe('auctionmanager.js', function () {
             mediaType: 'video-outstream',
           }
         );
-        registerBidder(spec);
-        spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-        spec.isBidRequestValid.returns(true);
         spec.interpretResponse.returns(bids1);
         auction.callBids();
         const addedBid = auction.getBidsReceived().pop();
