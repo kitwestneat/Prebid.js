@@ -25,39 +25,69 @@ function timestamp() {
 }
 
 const BIDDER_CODE = 'sampleBidder';
-const TEST_BIDS = [{
-  'ad': 'creative',
-  'cpm': '1.99',
-  'width': 300,
-  'height': 250,
-  'bidderCode': BIDDER_CODE,
-  'requestId': '4d0a6829338a07',
-  'creativeId': 'id',
-  'currency': 'USD',
-  'netRevenue': true,
-  'ttl': 360
-}];
+const BIDDER_CODE1 = 'sampleBidder1';
 
-const TEST_BID_REQS = [{
-  'bidderCode': BIDDER_CODE,
-  'auctionId': '20882439e3238c',
-  'bidderRequestId': '331f3cf3f1d9c8',
-  'bids': [
-    {
-      'bidder': BIDDER_CODE,
-      'params': {
-        'placementId': 'id'
-      },
-      'adUnitCode': 'adUnit-code',
-      'sizes': [[300, 250], [300, 600]],
-      'bidId': '4d0a6829338a07',
-      'bidderRequestId': '331f3cf3f1d9c8',
-      'auctionId': '20882439e3238c'
-    }
-  ],
-  'auctionStart': 1505250713622,
-  'timeout': 3000
-}];
+const ADUNIT_CODE = 'adUnit-code';
+const ADUNIT_CODE1 = 'adUnit-code-1';
+
+function mockBid(opts) {
+  let bidderCode = opts && opts.bidderCode;
+
+  return {
+    'ad': 'creative',
+    'cpm': '1.99',
+    'width': 300,
+    'height': 250,
+    'bidderCode': bidderCode || BIDDER_CODE,
+    'requestId': utils.getUniqueIdentifierStr(),
+    'creativeId': 'id',
+    'currency': 'USD',
+    'netRevenue': true,
+    'ttl': 360
+  };
+}
+
+function mockBidRequest(bid, opts) {
+  if (!bid) {
+    throw new Error('bid required');
+  }
+  let bidderCode = opts && opts.bidderCode;
+  let adUnitCode = opts && opts.adUnitCode;
+
+  let requestId = utils.getUniqueIdentifierStr();
+
+  return {
+    'bidderCode': bidderCode || bid.bidderCode,
+    'auctionId': '20882439e3238c',
+    'bidderRequestId': requestId,
+    'bids': [
+      {
+        'bidder': bidderCode || bid.bidderCode,
+        'params': {
+          'placementId': 'id'
+        },
+        'adUnitCode': adUnitCode || ADUNIT_CODE,
+        'sizes': [[300, 250], [300, 600]],
+        'bidId': bid.requestId,
+        'bidderRequestId': requestId,
+        'auctionId': '20882439e3238c'
+      }
+    ],
+    'auctionStart': 1505250713622,
+    'timeout': 3000
+  };
+}
+
+const TEST_BIDS = [mockBid()];
+const TEST_BID_REQS = TEST_BIDS.map(mockBidRequest);
+
+function mockAjaxBuilder() {
+  return function(url, callback) {
+    const fakeResponse = sinon.stub();
+    fakeResponse.returns('headerContent');
+    callback.success('response body', { getResponseHeader: fakeResponse });
+  };
+}
 
 describe('auctionmanager.js', function () {
   let xhr;
@@ -492,8 +522,8 @@ describe('auctionmanager.js', function () {
     let spec;
     let auction;
     let ajaxStub;
-    let makeRequestsStub;
     let bids = TEST_BIDS;
+    let makeRequestsStub;
 
     before(() => {
       let bidRequests = TEST_BID_REQS;
@@ -501,13 +531,7 @@ describe('auctionmanager.js', function () {
       makeRequestsStub = sinon.stub(adaptermanager, 'makeBidRequests');
       makeRequestsStub.returns(bidRequests);
 
-      ajaxStub = sinon.stub(ajaxLib, 'ajaxBuilder').callsFake(function() {
-        return function(url, callback) {
-          const fakeResponse = sinon.stub();
-          fakeResponse.returns('headerContent');
-          callback.success('response body', { getResponseHeader: fakeResponse });
-        }
-      });
+      ajaxStub = sinon.stub(ajaxLib, 'ajaxBuilder').callsFake(mockAjaxBuilder);
     });
 
     after(() => {
@@ -624,87 +648,19 @@ describe('auctionmanager.js', function () {
     let spec1;
     let auction;
     let ajaxStub;
-    const BIDDER_CODE = 'sampleBidder';
-    const BIDDER_CODE1 = 'sampleBidder1';
 
-    let makeRequestsStub;
-    let bids = [{
-      'ad': 'creative',
-      'cpm': '1.99',
-      'width': 300,
-      'height': 250,
-      'bidderCode': BIDDER_CODE,
-      'requestId': '4d0a6829338a07',
-      'creativeId': 'id',
-      'currency': 'USD',
-      'netRevenue': true,
-      'ttl': 360
-    }];
-
-    let bids1 = [{
-      'ad': 'creative',
-      'cpm': '1.99',
-      'width': 300,
-      'height': 250,
-      'bidderCode': BIDDER_CODE1,
-      'requestId': '5d0a6829338a07',
-      'creativeId': 'id',
-      'currency': 'USD',
-      'netRevenue': true,
-      'ttl': 360
-    }];
-
-    let bidRequests = [{
-      'bidderCode': BIDDER_CODE,
-      'auctionId': '20882439e3238c',
-      'bidderRequestId': '331f3cf3f1d9c8',
-      'bids': [
-        {
-          'bidder': BIDDER_CODE,
-          'params': {
-            'placementId': 'id'
-          },
-          'adUnitCode': 'adUnit-code',
-          'sizes': [[300, 250], [300, 600]],
-          'bidId': '4d0a6829338a07',
-          'bidderRequestId': '331f3cf3f1d9c8',
-          'auctionId': '20882439e3238c'
-        }
-      ],
-      'auctionStart': 1505250713622,
-      'timeout': 3000
-    }, {
-      'bidderCode': BIDDER_CODE1,
-      'auctionId': '20882439e3238c',
-      'bidderRequestId': '661f3cf3f1d9c8',
-      'bids': [
-        {
-          'bidder': BIDDER_CODE1,
-          'params': {
-            'placementId': 'id'
-          },
-          'adUnitCode': 'adUnit-code-1',
-          'sizes': [[300, 250], [300, 600]],
-          'bidId': '5d0a6829338a07',
-          'bidderRequestId': '661f3cf3f1d9c8',
-          'auctionId': '20882439e3238c'
-        }
-      ],
-      'auctionStart': 1505250713623,
-      'timeout': 3000
-    }];
+    let bids = TEST_BIDS;
+    let bids1 = [mockBid({ bidderCode: BIDDER_CODE1 })];
 
     before(() => {
-      makeRequestsStub = sinon.stub(adaptermanager, 'makeBidRequests');
+      let bidRequests = [
+        mockBidRequest(bids[0]),
+        mockBidRequest(bids1[0], { adUnitCode: ADUNIT_CODE1 })
+      ];
+      let makeRequestsStub = sinon.stub(adaptermanager, 'makeBidRequests');
       makeRequestsStub.returns(bidRequests);
 
-      ajaxStub = sinon.stub(ajaxLib, 'ajaxBuilder').callsFake(function() {
-        return function(url, callback) {
-          const fakeResponse = sinon.stub();
-          fakeResponse.returns('headerContent');
-          callback.success('response body', { getResponseHeader: fakeResponse });
-        }
-      });
+      ajaxStub = sinon.stub(ajaxLib, 'ajaxBuilder').callsFake(mockAjaxBuilder);
     });
 
     after(() => {
@@ -714,17 +670,17 @@ describe('auctionmanager.js', function () {
 
     beforeEach(() => {
       adUnits = [{
-        code: 'adUnit-code',
+        code: ADUNIT_CODE,
         bids: [
           {bidder: BIDDER_CODE, params: {placementId: 'id'}},
         ]
       }, {
-        code: 'adUnit-code-1',
+        code: ADUNIT_CODE1,
         bids: [
           {bidder: BIDDER_CODE1, params: {placementId: 'id'}},
         ]
       }];
-      adUnitCodes = ['adUnit-code', 'adUnit-code-1'];
+      adUnitCodes = adUnits.map(({ code }) => code);
       auction = auctionModule.newAuction({adUnits, adUnitCodes, callback: function() {}, cbTimeout: 3000});
       createAuctionStub = sinon.stub(auctionModule, 'newAuction');
       createAuctionStub.returns(auction);
@@ -744,13 +700,7 @@ describe('auctionmanager.js', function () {
         interpretResponse: sinon.stub(),
         getUserSyncs: sinon.stub()
       };
-    });
 
-    afterEach(() => {
-      auctionModule.newAuction.restore();
-    });
-
-    it('should not alter bid adID', () => {
       registerBidder(spec);
       registerBidder(spec1);
 
@@ -761,7 +711,13 @@ describe('auctionmanager.js', function () {
       spec1.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
       spec1.isBidRequestValid.returns(true);
       spec1.interpretResponse.returns(bids1);
+    });
 
+    afterEach(() => {
+      auctionModule.newAuction.restore();
+    });
+
+    it('should not alter bid adID', () => {
       auction.callBids();
 
       const addedBid2 = auction.getBidsReceived().pop();
@@ -773,17 +729,6 @@ describe('auctionmanager.js', function () {
     it('should not add banner bids that have no width or height', () => {
       bids1[0].width = undefined;
       bids1[0].height = undefined;
-
-      registerBidder(spec);
-      registerBidder(spec1);
-
-      spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-      spec.isBidRequestValid.returns(true);
-      spec.interpretResponse.returns(bids);
-
-      spec1.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-      spec1.isBidRequestValid.returns(true);
-      spec1.interpretResponse.returns(bids1);
 
       auction.callBids();
 
@@ -800,15 +745,7 @@ describe('auctionmanager.js', function () {
       const bidsCopy = [Object.assign({}, bids[0], { mediaType: 'video'})];
       const bids1Copy = [Object.assign({}, bids1[0], { mediaType: 'video'})];
 
-      registerBidder(spec);
-      registerBidder(spec1);
-
-      spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-      spec.isBidRequestValid.returns(true);
       spec.interpretResponse.returns(bidsCopy);
-
-      spec1.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-      spec1.isBidRequestValid.returns(true);
       spec1.interpretResponse.returns(bids1Copy);
 
       auction.callBids();
