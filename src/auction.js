@@ -381,8 +381,9 @@ export function getStandardBidderSettings() {
 }
 
 export function getKeyValueTargetingPairs(bidderCode, custBidObj) {
-  if (!custBidObj)
+  if (!custBidObj) {
     return {};
+  }
 
   var keyValues = {};
   var bidder_settings = $$PREBID_GLOBAL$$.bidderSettings;

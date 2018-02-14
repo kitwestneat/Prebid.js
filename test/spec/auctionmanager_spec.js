@@ -102,8 +102,9 @@ describe('auctionmanager.js', function () {
         'hb_format': bid.mediaType,
       };
 
-      if (!keys)
+      if (!keys) {
         return expected;
+      }
 
       return keys.reduce((map, key) => {
         map[key] = expected[key];
