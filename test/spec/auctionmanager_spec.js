@@ -78,6 +78,22 @@ function mockBidRequest(bid, opts) {
   };
 }
 
+function mockBidder(bidderCode, bids) {
+  let spec = {
+    code: bidderCode,
+    isBidRequestValid: sinon.stub(),
+    buildRequests: sinon.stub(),
+    interpretResponse: sinon.stub(),
+    getUserSyncs: sinon.stub()
+  };
+
+  spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
+  spec.isBidRequestValid.returns(true);
+  spec.interpretResponse.returns(bids);
+
+  return spec;
+}
+
 const TEST_BIDS = [mockBid()];
 const TEST_BID_REQS = TEST_BIDS.map(mockBidRequest);
 
@@ -543,12 +559,12 @@ describe('auctionmanager.js', function () {
       let loadScriptStub;
       beforeEach(() => {
         adUnits = [{
-          code: 'adUnit-code',
+          code: ADUNIT_CODE,
           bids: [
             {bidder: BIDDER_CODE, params: {placementId: 'id'}},
           ]
         }];
-        adUnitCodes = ['adUnit-code'];
+        adUnitCodes = [ADUNIT_CODE];
         auction = auctionModule.newAuction({adUnits, adUnitCodes, callback: function() {}, cbTimeout: 3000});
         createAuctionStub = sinon.stub(auctionModule, 'newAuction');
         createAuctionStub.returns(auction);
@@ -557,18 +573,8 @@ describe('auctionmanager.js', function () {
           args[1]();
         });
 
-        spec = {
-          code: BIDDER_CODE,
-          isBidRequestValid: sinon.stub(),
-          buildRequests: sinon.stub(),
-          interpretResponse: sinon.stub(),
-          getUserSyncs: sinon.stub()
-        };
-
+        spec = mockBidder(BIDDER_CODE, bids);
         registerBidder(spec);
-        spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-        spec.isBidRequestValid.returns(true);
-        spec.interpretResponse.returns(bids);
       });
 
       afterEach(() => {
@@ -685,32 +691,11 @@ describe('auctionmanager.js', function () {
       createAuctionStub = sinon.stub(auctionModule, 'newAuction');
       createAuctionStub.returns(auction);
 
-      spec = {
-        code: BIDDER_CODE,
-        isBidRequestValid: sinon.stub(),
-        buildRequests: sinon.stub(),
-        interpretResponse: sinon.stub(),
-        getUserSyncs: sinon.stub()
-      };
-
-      spec1 = {
-        code: BIDDER_CODE1,
-        isBidRequestValid: sinon.stub(),
-        buildRequests: sinon.stub(),
-        interpretResponse: sinon.stub(),
-        getUserSyncs: sinon.stub()
-      };
+      spec = mockBidder(BIDDER_CODE, bids);
+      spec1 = mockBidder(BIDDER_CODE1, bids1);
 
       registerBidder(spec);
       registerBidder(spec1);
-
-      spec.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-      spec.isBidRequestValid.returns(true);
-      spec.interpretResponse.returns(bids);
-
-      spec1.buildRequests.returns([{'id': 123, 'method': 'POST'}]);
-      spec1.isBidRequestValid.returns(true);
-      spec1.interpretResponse.returns(bids1);
     });
 
     afterEach(() => {
