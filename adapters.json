@@ -1,6 +1,7 @@
 [
 	"appnexusBidAdapter",
 		"aolBidAdapter",
+		"beachfrontBidAdapter",
 		"openxBidAdapter",
 		"rhythmoneBidAdapter",
 		"sharethroughBidAdapter",
