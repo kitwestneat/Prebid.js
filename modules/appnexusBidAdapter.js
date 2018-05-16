@@ -483,6 +483,7 @@ function newBid(serverBid, rtbBid, bidderRequest) {
       width: rtbBid.rtb.video.player_width,
       height: rtbBid.rtb.video.player_height,
       vastUrl: rtbBid.rtb.video.asset_url,
+      vastXml: rtbBid.rtb.video.vastXml || rtbBid.rtb.video.content,
       vastImpUrl: rtbBid.notify_url,
       ttl: 3600
     });
