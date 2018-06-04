@@ -1,14 +1,15 @@
 [
 	"appnexusBidAdapter",
-		"aolBidAdapter",
-		"beachfrontBidAdapter",
-		"openxBidAdapter",
-		"rhythmoneBidAdapter",
-		"sharethroughBidAdapter",
-		"rubiconBidAdapter",
-		"sekindoUMBidAdapter",
-		"yieldmoBidAdapter",
-		"c1xBidAdapter",
-		"yieldbotBidAdapter",
-		"sonobiBidAdapter"
+	"aolBidAdapter",
+	"beachfrontBidAdapter",
+	"openxBidAdapter",
+	"rhythmoneBidAdapter",
+	"sharethroughBidAdapter",
+	"rubiconBidAdapter",
+	"sekindoUMBidAdapter",
+	"yieldmoBidAdapter",
+	"c1xBidAdapter",
+	"yieldbotBidAdapter",
+	"sonobiBidAdapter",
+	"gumgumBidAdapter"
 ]
