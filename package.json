@@ -6,7 +6,8 @@
   "scripts": {
     "test": "gulp test",
     "lint": "gulp lint",
-	"build": "gulp build-bundle-dev --modules=adapters.json"
+    "build": "gulp build-bundle-dev --modules=adapters.json",
+    "deploy": "scp build/dev/prebid.js pbh:/tmp"
   },
   "repository": {
     "type": "git",
