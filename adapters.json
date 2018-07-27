@@ -12,5 +12,7 @@
 	"yieldbotBidAdapter",
 	"sonobiBidAdapter",
 	"rhythmoneBidAdapter",
-	"gumgumBidAdapter"
+	"gumgumBidAdapter",
+	"justpremiumBidAdapter",
+	"districtmDmxAdapter"
 ]
