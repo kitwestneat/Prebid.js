@@ -14,5 +14,6 @@
 	"rhythmoneBidAdapter",
 	"gumgumBidAdapter",
 	"justpremiumBidAdapter",
-	"districtmDmxAdapter"
+	"districtmDmxAdapter",
+	"underdogmediaBidAdapter"
 ]
