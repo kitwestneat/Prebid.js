@@ -471,7 +471,10 @@ function generateVideoParameters(bid, bidderRequest) {
   let height;
 
   // normalize config for video size
-  if (isArray(bid.sizes) && bid.sizes.length === 2 && !isArray(bid.sizes[0])) {
+  if (bid.params.width && bid.params.height) {
+    width = bid.params.width;
+    height = bid.params.height;
+  } else if (isArray(bid.sizes) && bid.sizes.length === 2 && !isArray(bid.sizes[0])) {
     width = parseInt(bid.sizes[0], 10);
     height = parseInt(bid.sizes[1], 10);
   } else if (isArray(bid.sizes) && isArray(bid.sizes[0]) && bid.sizes[0].length === 2) {
