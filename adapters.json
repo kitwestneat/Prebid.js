@@ -15,5 +15,7 @@
 	"gumgumBidAdapter",
 	"justpremiumBidAdapter",
 	"districtmDmxAdapter",
-	"underdogmediaBidAdapter"
+	"underdogmediaBidAdapter",
+	"emx_digitalBidAdapter",
+	"teadsBidAdapter"
 ]
