@@ -16,6 +16,8 @@
 	"justpremiumBidAdapter",
 	"districtmDMXBidAdapter",
 	"underdogmediaBidAdapter",
+	"ixBidAdapter",
 	"emx_digitalBidAdapter",
-	"teadsBidAdapter"
+	"teadsBidAdapter",
+	"33acrossBidAdapter"
 ]
