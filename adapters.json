@@ -19,5 +19,7 @@
 	"ixBidAdapter",
 	"emx_digitalBidAdapter",
 	"teadsBidAdapter",
-	"33acrossBidAdapter"
+	"33acrossBidAdapter",
+	"tripleliftBidAdapter",
+	"oneVideoBidAdapter"
 ]
