@@ -21,6 +21,7 @@ export const spec = {
     }
 
     // Video validations
+    bid.params.video = bid.params.video || bid.video;
     if (typeof bid.params.video === 'undefined' || typeof bid.params.video.playerWidth === 'undefined' || typeof bid.params.video.playerHeight == 'undefined' || typeof bid.params.video.mimes == 'undefined') {
       return false;
     }
