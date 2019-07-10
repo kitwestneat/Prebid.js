@@ -1,17 +1,16 @@
-// JM: Prebid 1.0+ compatible 06/11/2018
-
+// JM: Prebid 1.38-2.21 compatible 06/27/2019
 var bidfactory = require('../src/bidfactory.js');
 var adloader = require('../src/adloader.js');
 var utils = require('../src/utils.js');
-var adaptermanager = require('../src/adaptermanager');
+var adapterManager = require('../src/adapterManager');
 var _addBidResponse;
 var _done;
 var responsesProcessed = {};
-var UDM_ADAPTER_VERSION = '1.13C';
+var UDM_ADAPTER_VERSION = '1.38-2.21C';
 var UDM_VENDOR_ID = '159';
 
 var UnderdogMediaAdapter = function UnderdogMediaAdapter() {
-  utils.logMessage(`Initializing UDM Adapter. PBJS Version: ${$$PREBID_GLOBAL$$.version} with adapter version: ${UDM_ADAPTER_VERSION}  Updated 20180611`);
+  utils.logMessage(`Initializing UDM Adapter. PBJS Version: ${$$PREBID_GLOBAL$$.version} with adapter version: ${UDM_ADAPTER_VERSION}  Updated/tested 20190627`);
   var getJsStaticUrl = window.location.protocol + '//bid.underdog.media/udm_header_lib.js';
   $$PREBID_GLOBAL$$.handleUnderdogMediaCB = function () { };
   function _callBids(bidderRequest, addBidResponse, done) {
@@ -55,11 +54,11 @@ var UnderdogMediaAdapter = function UnderdogMediaAdapter() {
   function bid(bidderRequest) {
     responsesProcessed[bidderRequest.auctionId] = 0;
     var bids = bidderRequest.bids;
-    var mapped_bids = [];
+    var mappedBids = [];
     for (var i = 0; i < bids.length; i++) {
       var bidRequest = bids[i];
       var callback = bidResponseCallback(bidRequest, bids.length);
-      mapped_bids.push({
+      mappedBids.push({
         auctionId: bidRequest.auctionId,
         auctionStart: bidderRequest.auctionStart,
         auctionTimeout: bidderRequest.timeout,
@@ -74,7 +73,7 @@ var UnderdogMediaAdapter = function UnderdogMediaAdapter() {
         callback: callback
       });
     }
-    var udmBidRequest = new window.udm_header_lib.BidRequestArray(mapped_bids);
+    var udmBidRequest = new window.udm_header_lib.BidRequestArray(mappedBids);
     udmBidRequest.send();
   }
 
@@ -87,32 +86,28 @@ var UnderdogMediaAdapter = function UnderdogMediaAdapter() {
   function bidResponseAvailable(bidRequest, bidResponse, bids) {
     if (bidResponse.bids.length > 0) {
       for (var i = 0; i < bidResponse.bids.length; i++) {
-        var udm_bid = bidResponse.bids[i];
-        var bid = bidfactory.createBid(1);
-        if (udm_bid.udmDebug) {
-          bid.udmDebug = udm_bid.udmDebug;
+        var udmBid = bidResponse.bids[i];
+        var bid = bidfactory.createBid(1, bidRequest);
+        if (udmBid.udmDebug) {
+          bid.udmDebug = udmBid.udmDebug;
         }
         bid.requestId = bidRequest.bidId;
-        bid.cpm = udm_bid.cpm;
-        bid.width = udm_bid.width;
-        bid.height = udm_bid.height;
-        bid.ttl = 360;
+        bid.cpm = udmBid.cpm;
+        bid.width = udmBid.width;
+        bid.height = udmBid.height;
+        bid.ttl = 60;
         bid.netRevenue = false;
         bid.currency = 'USD';
         bid.bidderCode = bidRequest.bidder;
         bid.auctionId = bidRequest.auctionId;
         bid.adUnitCode = bidRequest.adUnitCode;
-        bid.trueBidder = udm_bid.bidderCode;
+        bid.trueBidder = udmBid.bidderCode;
+        bid.creativeId = udmBid.creativeId;
 
-        var mid;
-        if (udm_bid.ad_url !== undefined) {
-          bid.adUrl = udm_bid.ad_url;
-          mid = 'adurl';
-          bid.creativeId = mid;
-        } else if (udm_bid.ad_html !== undefined) {
-          bid.ad = udm_bid.ad_html.replace('UDM_ADAPTER_VERSION', UDM_ADAPTER_VERSION);
-          mid = udm_bid.ad_html.substring(udm_bid.ad_html.indexOf('mid=') + 4, udm_bid.ad_html.indexOf(';zzz'));
-          bid.creativeId = mid || 'parseError';
+        if (udmBid.ad_url !== undefined) {
+          bid.adUrl = udmBid.ad_url;
+        } else if (udmBid.ad_html !== undefined) {
+          bid.ad = udmBid.ad_html.replace('UDM_ADAPTER_VERSION', UDM_ADAPTER_VERSION);
         } else {
           utils.logMessage('Underdogmedia bid is lacking both ad_url and ad_html, skipping bid');
           continue;
@@ -120,7 +115,7 @@ var UnderdogMediaAdapter = function UnderdogMediaAdapter() {
         _addBidResponse(bidRequest.adUnitCode, bid);
       }
     } else {
-      var nobid = bidfactory.createBid(2);
+      var nobid = bidfactory.createBid(2, bidRequest);
       nobid.bidderCode = bidRequest.bidder;
       _addBidResponse(bidRequest.adUnitCode, nobid);
     }
@@ -131,9 +126,22 @@ var UnderdogMediaAdapter = function UnderdogMediaAdapter() {
     }
   }
 
+  function getSpec() {
+    return {
+      onBidWon: (bid) => {
+        utils.logMessage('Underdog Media onBidWon Event', bid);
+      },
+      onSetTargeting: (bid) => {
+        utils.logMessage('Underdog Media onSetTargeting Event', bid);
+      }
+    }
+  }
+
   return {
-    callBids: _callBids
+    callBids: _callBids,
+    getSpec: getSpec
   };
 };
-adaptermanager.registerBidAdapter(new UnderdogMediaAdapter(), 'underdogmedia');
+var registerBidAdapter = adapterManager.default.registerBidAdapter;
+registerBidAdapter(new UnderdogMediaAdapter(), 'underdogmedia');
 module.exports = UnderdogMediaAdapter;
