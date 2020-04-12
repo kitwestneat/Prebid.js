@@ -1,6 +1,7 @@
 [
     "consentManagement",
 	"33acrossBidAdapter",
+    "justpremiumBidAdapter",
 	"appnexusBidAdapter",
 	"beachfrontBidAdapter",
 	"gumgumBidAdapter",
