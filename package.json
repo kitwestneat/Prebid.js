@@ -5,7 +5,9 @@
   "main": "src/prebid.js",
   "scripts": {
     "test": "gulp test",
-    "lint": "gulp lint"
+    "lint": "gulp lint",
+    "build": "gulp build-bundle-dev --modules=adapters.json",
+    "deploy": "scp build/dev/prebid.js www0:/tmp"
   },
   "repository": {
     "type": "git",
