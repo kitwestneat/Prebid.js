@@ -9,5 +9,6 @@
     "sovrnBidAdapter",
     "teadsBidAdapter",
     "tripleliftBidAdapter",
-    "underdogmediaBidAdapter"
+    "underdogmediaBidAdapter",
+    "yieldmoBidAdapter"
 ]
