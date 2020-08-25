@@ -1,4 +1,5 @@
 [
+    "aolBidAdapter",
     "appnexusBidAdapter",
     "consentManagement",
     "gumgumBidAdapter",
@@ -10,5 +11,6 @@
     "teadsBidAdapter",
     "tripleliftBidAdapter",
     "underdogmediaBidAdapter",
+    "unifiedIdSystem",
     "yieldmoBidAdapter"
 ]
