@@ -6,6 +6,7 @@
     "ixBidAdapter",
     "justpremiumBidAdapter",
     "openxBidAdapter",
+    "pubmaticBidAdapter",
     "sharethroughBidAdapter",
     "sovrnBidAdapter",
     "teadsBidAdapter",
