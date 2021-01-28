@@ -8,7 +8,7 @@
     "test": "gulp test",
     "lint": "gulp lint",
     "build": "gulp build-bundle-dev --modules=adapters.json",
-    "deploy": "scp build/dev/prebid.js be0:/tmp"
+    "deploy": "scp build/dev/prebid.js be0:/tmp/pbh-pb.js"
   },
   "repository": {
     "type": "git",
