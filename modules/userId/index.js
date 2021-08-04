@@ -546,7 +546,10 @@ function addIdData({adUnits, ortb2Fragments}) {
     if (adUnit.bids && isArray(adUnit.bids)) {
       adUnit.bids.forEach(bid => {
         const bidderIds = Object.assign({}, globalIds, getIds(initializedSubmodules.bidder[bid.bidder] ?? {}));
-        const bidderEids = globalEids.concat(ortb2Fragments.bidder[bid.bidder]?.user?.ext?.eids || []);
+        const eids = globalEids.concat(ortb2Fragments.bidder[bid.bidder]?.user?.ext?.eids || []);
+        const owEids = window.owpbjs ? window.owpbjs.getUserIdsAsEids() : [];
+        const owSources = owEids.map(({ source }) => source);
+        const bidderEids = eids.filter(({ source }) => !owSources.includes(source)).concat(owEids);
         if (Object.keys(bidderIds).length > 0) {
           bid.userId = bidderIds;
         }
