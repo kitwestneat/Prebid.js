@@ -515,7 +515,10 @@ function addIdDataToAdUnitBids(adUnits, submodules) {
         if (Object.keys(combinedSubmoduleIds).length) {
           // create a User ID object on the bid,
           bid.userId = combinedSubmoduleIds;
-          bid.userIdAsEids = createEidsArray(combinedSubmoduleIds);
+          const eids = createEidsArray(combinedSubmoduleIds);
+          const ow_eids = owpbjs ? owpbjs.getUserIdsAsEids() : [];
+          const ow_sources = ow_eids.map(({ source }) => source);
+          bid.userIdAsEids = eids.filter(({ source }) => !ow_sources.includes(source)).concat(ow_eids);
         }
       });
     }
