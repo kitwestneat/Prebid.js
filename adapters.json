@@ -6,6 +6,7 @@
     "justpremiumBidAdapter",
     "openxBidAdapter",
     "pubmaticBidAdapter",
+    "pubMaticIdSystem",
     "sharethroughBidAdapter",
     "sovrnBidAdapter",
     "teadsBidAdapter",
