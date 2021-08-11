@@ -499,6 +499,8 @@ export function newConfig() {
     currBidder = bidder;
     try {
       return fn();
+    } catch (e) {
+      console.error("prebid runWithBidder:", bidder, e);
     } finally {
       resetBidder();
     }
