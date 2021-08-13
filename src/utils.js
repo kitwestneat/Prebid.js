@@ -268,7 +268,7 @@ export function logWarn() {
 }
 
 export function logError() {
-  if (debugTurnedOn() && consoleErrorExists) {
+  if (consoleErrorExists) {
     console.error.apply(console, decorateLog(arguments, 'ERROR:'));
   }
   events.emit(CONSTANTS.EVENTS.AUCTION_DEBUG, {type: 'ERROR', arguments: arguments});
