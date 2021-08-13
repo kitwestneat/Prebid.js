@@ -549,12 +549,12 @@ function _createVideoRequest(bid) {
       }
     }
     // read playersize and assign to h and w.
-    if (utils.isArray(bid.mediaTypes.video.playerSize[0])) {
-      videoObj.w = parseInt(bid.mediaTypes.video.playerSize[0][0], 10);
-      videoObj.h = parseInt(bid.mediaTypes.video.playerSize[0][1], 10);
-    } else if (utils.isNumber(bid.mediaTypes.video.playerSize[0])) {
-      videoObj.w = parseInt(bid.mediaTypes.video.playerSize[0], 10);
-      videoObj.h = parseInt(bid.mediaTypes.video.playerSize[1], 10);
+    if (utils.isArray(videoData && videoData.playerSize[0])) {
+      videoObj.w = parseInt(videoData.playerSize[0][0], 10);
+      videoObj.h = parseInt(videoData.playerSize[0][1], 10);
+    } else if (utils.isNumber(videoData.playerSize[0])) {
+      videoObj.w = parseInt(videoData.playerSize[0], 10);
+      videoObj.h = parseInt(videoData.playerSize[1], 10);
     }
   } else {
     videoObj = UNDEFINED;
