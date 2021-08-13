@@ -283,7 +283,7 @@ export function logWarn() {
 }
 
 export function logError() {
-  if (debugTurnedOn() && consoleErrorExists) {
+  if (consoleErrorExists) {
     // eslint-disable-next-line no-console
     console.error.apply(console, decorateLog(arguments, 'ERROR:'));
   }
