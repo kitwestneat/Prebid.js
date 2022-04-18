@@ -640,7 +640,7 @@ export function newConfig() {
     try {
       return fn();
     } catch (e) {
-      console.error("prebid runWithBidder:", bidder, e);
+      console.error('prebid runWithBidder:', bidder, e);
     } finally {
       resetBidder();
     }
