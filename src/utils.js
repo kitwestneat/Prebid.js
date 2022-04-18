@@ -259,7 +259,7 @@ export function getWindowLocation() {
  */
 export function logMessage() {
   if (window.PbhAdUnit && window.PbhAdUnit.add_debug_log) {
-      PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
+    PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
   }
   if (debugTurnedOn() && consoleLogExists) {
     console.log.apply(console, decorateLog(arguments, 'MESSAGE:'));
@@ -268,7 +268,7 @@ export function logMessage() {
 
 export function logInfo() {
   if (window.PbhAdUnit && window.PbhAdUnit.add_debug_log) {
-      PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
+    PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
   }
   if (debugTurnedOn() && consoleInfoExists) {
     console.info.apply(console, decorateLog(arguments, 'INFO:'));
@@ -277,7 +277,7 @@ export function logInfo() {
 
 export function logWarn() {
   if (window.PbhAdUnit && window.PbhAdUnit.add_debug_log) {
-      PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
+    PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
   }
   if (debugTurnedOn() && consoleWarnExists) {
     console.warn.apply(console, decorateLog(arguments, 'WARNING:'));
@@ -287,7 +287,7 @@ export function logWarn() {
 
 export function logError() {
   if (window.PbhAdUnit && window.PbhAdUnit.add_debug_log) {
-      PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
+    PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
   }
   if (consoleErrorExists) {
     console.error.apply(console, decorateLog(arguments, 'ERROR:'));
