@@ -560,10 +560,10 @@ function _createVideoRequest(bid) {
       }
     }
     // read playersize and assign to h and w.
-    if (utils.isArray(videoData && videoData.playerSize[0])) {
+    if (isArray(videoData && videoData.playerSize[0])) {
       videoObj.w = parseInt(videoData.playerSize[0][0], 10);
       videoObj.h = parseInt(videoData.playerSize[0][1], 10);
-    } else if (utils.isNumber(videoData.playerSize[0])) {
+    } else if (isNumber(videoData.playerSize[0])) {
       videoObj.w = parseInt(videoData.playerSize[0], 10);
       videoObj.h = parseInt(videoData.playerSize[1], 10);
     }
