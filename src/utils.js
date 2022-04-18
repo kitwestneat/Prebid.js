@@ -262,7 +262,7 @@ export function getWindowLocation() {
  */
 export function logMessage() {
   if (window.PbhAdUnit && window.PbhAdUnit.add_debug_log) {
-      PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
+    PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
   }
   if (debugTurnedOn() && consoleLogExists) {
     // eslint-disable-next-line no-console
@@ -272,7 +272,7 @@ export function logMessage() {
 
 export function logInfo() {
   if (window.PbhAdUnit && window.PbhAdUnit.add_debug_log) {
-      PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
+    PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
   }
   if (debugTurnedOn() && consoleInfoExists) {
     // eslint-disable-next-line no-console
@@ -282,7 +282,7 @@ export function logInfo() {
 
 export function logWarn() {
   if (window.PbhAdUnit && window.PbhAdUnit.add_debug_log) {
-      PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
+    PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
   }
   if (debugTurnedOn() && consoleWarnExists) {
     // eslint-disable-next-line no-console
@@ -293,7 +293,7 @@ export function logWarn() {
 
 export function logError() {
   if (window.PbhAdUnit && window.PbhAdUnit.add_debug_log) {
-      PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
+    PbhAdUnit.add_debug_log(['prebid'].concat(arguments));
   }
   if (consoleErrorExists) {
     // eslint-disable-next-line no-console

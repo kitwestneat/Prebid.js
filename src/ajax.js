@@ -5,7 +5,7 @@ const XHR_DONE = 4;
 
 let ajax_debug = false;
 window.set_ajax_debug = function(cb) {
-    ajax_debug = cb;
+  ajax_debug = cb;
 };
 
 /**
@@ -28,9 +28,8 @@ export function ajaxBuilder(timeout = 3000, {request, done} = {}) {
       parser.href = url;
 
       if (ajax_debug) {
-          let debug_resp = ajax_debug(url, callback, data, options);
-          if (debug_resp)
-              return;
+        let debug_resp = ajax_debug(url, callback, data, options);
+        if (debug_resp) { return; }
       }
 
       let callbacks = typeof callback === 'object' && callback !== null ? callback : {
