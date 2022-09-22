@@ -189,7 +189,7 @@ export const sharethroughAdapterSpec = {
           impression.banner = {
             pos: deepAccess(bidReq, 'mediaTypes.banner.pos', 0),
             topframe: inIframe() ? 0 : 1,
-            format: pbh_map_sizes(bidReq.params.pkey),
+            format: [pbh_map_sizes(bidReq.params.pkey)],
           };
           const battr = deepAccess(bidReq, 'mediaTypes.banner.battr', null) || deepAccess(bidReq, 'ortb2Imp.banner.battr')
           if (battr) impression.banner.battr = battr
