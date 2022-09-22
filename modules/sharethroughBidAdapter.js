@@ -176,7 +176,7 @@ export const sharethroughAdapterSpec = {
           impression.banner = {
             pos: deepAccess(bidReq, 'mediaTypes.banner.pos', 0),
             topframe: inIframe() ? 0 : 1,
-            format: pbh_map_sizes(bidReq.params.pkey),
+            format: [pbh_map_sizes(bidReq.params.pkey)],
           };
         }
 
