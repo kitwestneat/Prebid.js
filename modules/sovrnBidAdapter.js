@@ -38,6 +38,45 @@ const REQUIRED_VIDEO_PARAMS = {
   protocols: ORTB_VIDEO_PARAMS.protocols
 }
 
+function pbh_sovrn_map_sizes(id) {
+    const MAP = {
+        '620850': { w: 300, h: 250 },
+        '620851': { w: 728, h: 90 },
+        '620852': { w: 300, h: 250 },
+        '620853': { w: 320, h: 50 },
+        '620854': { w: 728, h: 90 },
+        '620855': { w: 728, h: 90 },
+        '620856': { w: 320, h: 50 },
+        '620857': { w: 320, h: 50 },
+        '627972': { w: 728, h: 90 },
+        '627973': { w: 300, h: 600 },
+        '627974': { w: 300, h: 250 },
+        '627975': { w: 320, h: 50 },
+        '627976': { w: 728, h: 90 },
+        '627977': { w: 300, h: 250 },
+        '627978': { w: 300, h: 600 },
+        '627979': { w: 320, h: 50 },
+        '633332': { w: 300, h: 250 },
+        '633333': { w: 300, h: 600 },
+        '633334': { w: 160, h: 600 },
+        '633335': { w: 320, h: 50 },
+        '633336': { w: 300, h: 250 },
+        '633337': { w: 300, h: 600 },
+        '633338': { w: 320, h: 50 },
+        '633339': { w: 160, h: 600 },
+        '638288': { w: 970, h: 250 },
+        '638289': { w: 970, h: 250 },
+        '638290': { w: 970, h: 250 },
+        '638291': { w: 970, h: 250 },
+    };
+
+    if (!MAP[id]) {
+        console.error('pbh_sovrn_map_sizes: unknown id', id);
+    }
+
+    return MAP[id];
+}
+
 export const spec = {
   code: 'sovrn',
   supportedMediaTypes: [BANNER, VIDEO],
@@ -115,8 +154,10 @@ export const spec = {
           bidSizes = bidSizes.filter(size => isArray(size))
           const processedSizes = bidSizes.map(size => ({w: parseInt(size[0], 10), h: parseInt(size[1], 10)}))
 
+          const processedSizes_pbh = pbh_sovrn_map_sizes(imp.tagid) || processedSizes;
+
           imp.banner = {
-            format: processedSizes,
+            format: processedSizes_pbh,
             w: 1,
             h: 1,
           };
