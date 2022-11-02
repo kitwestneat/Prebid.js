@@ -68,13 +68,18 @@ function pbh_sovrn_map_sizes(id) {
         '638289': { w: 970, h: 250 },
         '638290': { w: 970, h: 250 },
         '638291': { w: 970, h: 250 },
+        '638293': { w: 300, h: 250 },
+        '638295': { w: 728, h: 90 },
+        '638298': { w: 320, h: 50 },
+        '638306': { w: 160, h: 600 },
+        '638308': { w: 300, h: 600 },
     };
 
     if (!MAP[id]) {
         console.error('pbh_sovrn_map_sizes: unknown id', id);
     }
 
-    return MAP[id];
+    return [MAP[id]];
 }
 
 export const spec = {
