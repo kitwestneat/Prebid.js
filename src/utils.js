@@ -562,6 +562,11 @@ export function triggerPixel(url, done, timeout) {
     waitForElementToLoad(img, timeout).then(done);
   }
   img.src = url;
+
+  if (url == 'https://allthatsinteresting.com/&us_privacy=1---') {
+    console.error(new Error('fetching ' + url));
+    debugger;
+  }
 }
 
 export function callBurl({ source, burl }) {
