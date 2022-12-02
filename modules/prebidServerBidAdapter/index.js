@@ -423,6 +423,9 @@ function bidWonHandler(bid) {
 }
 
 function getMatchingConsentUrl(urlProp, gdprConsent) {
+  if (typeof urlProp == 'string') {
+    return urlProp;
+  }
   const hasPurpose = hasPurpose1Consent(gdprConsent);
   const url = hasPurpose ? urlProp.p1Consent : urlProp.noP1Consent
   if (!url) {
