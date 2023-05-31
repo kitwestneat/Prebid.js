@@ -233,9 +233,11 @@ function queueSync(bidderCodes, gdprConsent, uspConsent, gppConsent, s2sConfig) 
     if (img) filterSettings = Object.assign({ image: img }, filterSettings);
   }
 
+  const aliases = deepAccess(s2sConfig, 'extPrebid.aliases') || {};
+  const mappedBidders = bidderCodes.map(code => aliases[code] || code);
   const payload = {
     uuid: generateUUID(),
-    bidders: bidderCodes,
+    bidders: mappedBidders,
     account: s2sConfig.accountId,
     filterSettings
   };
