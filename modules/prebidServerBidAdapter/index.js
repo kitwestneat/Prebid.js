@@ -228,9 +228,12 @@ function queueSync(bidderCodes, gdprConsent, uspConsent, s2sConfig) {
   }
   _syncCount++;
 
+  const aliases = deepAccess(s2sConfig, 'extPrebid.aliases') || {};
+  const mappedBidders = bidderCodes.map(code => aliases[code] || code);
+
   const payload = {
     uuid: generateUUID(),
-    bidders: bidderCodes,
+    bidders: mappedBidders,
     account: s2sConfig.accountId
   };
 
