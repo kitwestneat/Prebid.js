@@ -5,6 +5,7 @@
     "consentManagementUsp",
     "criteoBidAdapter",
     "gptPreAuction",
+    "identityLinkIdSystem",
     "ixBidAdapter",
     "justpremiumBidAdapter",
     "openxBidAdapter",
