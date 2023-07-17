@@ -36,9 +36,10 @@ export const pubMaticIdSubmodule = {
    * @returns {pubMaticID}
    */
   getId(config, consentData) {
-    if (!window.PWT || typeof PWT.getUserIds != 'function') { return; }
+    const pwt = window.IHPWT || window.PWT;
+    if (!pwt || typeof pwt.getUserIds != 'function') { return; }
 
-    const ids = PWT.getUserIds();
+    const ids = pwt.getUserIds();
     console.log('pubMaticID', ids);
 
     return {id: ids};
