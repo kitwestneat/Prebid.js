@@ -187,6 +187,9 @@ export const spec = {
         }
       });
     }
+    if (document.location.search.match(/undertone_debug=true/) && !bids.length) {
+      bids.push({ ad: 'test', cpm: 10, width: 1, height: 1, currency: 'USD', ttl: 300, creativeId: '3644:JSQKPCN34REHTLAENKH6TI_970x250_1', netRevenue: true, requestId: JSON.parse(request.data)['x-ut-hb-params'][0].bidRequestId });
+    }
     return bids;
   },
   getUserSyncs: function(syncOptions, serverResponses, gdprConsent, usPrivacy) {
