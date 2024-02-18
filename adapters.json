@@ -1,5 +1,4 @@
 [
-    "aolBidAdapter",
     "appnexusBidAdapter",
     "consentManagement",
     "consentManagementUsp",
@@ -12,7 +11,6 @@
     "justpremiumBidAdapter",
     "openxBidAdapter",
     "prebidServerBidAdapter",
-    "pubCommonId",
     "pubmaticBidAdapter",
     "rubiconBidAdapter",
     "s2sTesting",
