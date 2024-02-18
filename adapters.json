@@ -15,6 +15,7 @@
     "pubCommonId",
     "pubmaticBidAdapter",
     "rubiconBidAdapter",
+    "s2sTesting",
     "schain",
     "sharethroughBidAdapter",
     "sovrnBidAdapter",
