@@ -14,27 +14,6 @@ export const sharethroughInternal = {
   getProtocol,
 };
 
-function pbh_map_sizes(pkey) {
-    const BIG = { w: 970, h: 250 };
-    const SMALL = { w: 300, h: 250 };
-    switch (pkey) {
-        case 'xB2v3uzTfQLp2KYF3ZLQqBDb':
-        case '6PZNh6ndtMf8SoeAhesoHETP':
-        case 'oZcWbYE7JFgZxVnWrP9uATqV':
-        case 'CpWVSoP149KM3ChczDgdXwZ8':
-        case 'X7NwkUmBm33SpfxHjPnZZREX':
-            return BIG;
-
-        case 'RMBmtjpiz9gkvDRURY9XYDvw':
-        case 'BrhZ8WDGKxcAcEvPeK5gDaHK':
-        case 'gw4bMX3Qdfr8NJsMT7LisaAU':
-        case '9cda7052':
-        case 'Q6BZ7KZDCpG6MAJqwGdvFQ55':
-        default:
-            return SMALL;
-    }
-}
-
 export const sharethroughAdapterSpec = {
   code: BIDDER_CODE,
   supportedMediaTypes: [VIDEO, BANNER],
@@ -176,7 +155,7 @@ export const sharethroughAdapterSpec = {
           impression.banner = {
             pos: deepAccess(bidReq, 'mediaTypes.banner.pos', 0),
             topframe: inIframe() ? 0 : 1,
-            format: [pbh_map_sizes(bidReq.params.pkey)],
+            format: bidReq.sizes.map((size) => ({ w: +size[0], h: +size[1] })),
           };
         }
 
