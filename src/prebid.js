@@ -1001,4 +1001,6 @@ pbjsInstance.triggerBilling = (winningBid) => {
   }
 };
 
+pbjsInstance.pbhEmit = events.emit;
+
 export default pbjsInstance;
