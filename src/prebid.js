@@ -1041,4 +1041,6 @@ pbjsInstance.triggerBilling = ({adId, adUnitCode}) => {
     });
 };
 
+pbjsInstance.pbhEmit = events.emit;
+
 export default pbjsInstance;
