@@ -9,6 +9,7 @@
     "id5IdSystem",
     "identityLinkIdSystem",
     "imdsBidAdapter",
+    "nativoBidAdapter",
     "openxBidAdapter",
     "prebidServerBidAdapter",
     "pubmaticBidAdapter",
