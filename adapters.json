@@ -10,7 +10,6 @@
     "identityLinkIdSystem",
     "imdsBidAdapter",
     "nativoBidAdapter",
-    "openxBidAdapter",
     "prebidServerBidAdapter",
     "pubmaticBidAdapter",
     "rubiconBidAdapter",
@@ -25,5 +24,6 @@
     "undertoneBidAdapter",
     "unifiedIdSystem",
     "userId",
+    "vidazooBidAdapter",
     "yieldmoBidAdapter"
 ]
