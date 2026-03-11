@@ -10,6 +10,8 @@
     "identityLinkIdSystem",
     "imdsBidAdapter",
     "nativoBidAdapter",
+    "oguryBidAdapter",
+    "priceFloors",
     "pubmaticBidAdapter",
     "rubiconBidAdapter",
     "schain",
