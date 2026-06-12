@@ -1042,5 +1042,6 @@ pbjsInstance.triggerBilling = ({adId, adUnitCode}) => {
 };
 
 pbjsInstance.pbhEmit = events.emit;
+pbjsInstance.pbhAddWinningBid = (bid) => auctionManager.addWinningBid(bid);
 
 export default pbjsInstance;
